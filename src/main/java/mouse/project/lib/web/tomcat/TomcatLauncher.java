@@ -28,7 +28,6 @@ public class TomcatLauncher {
 
         Context context = tomcat.addContext("", null);
         Tomcat.addServlet(context, "WebMapper", new WebMapper(configClass));
-
         Collection<ContextConfigurator> configs = Ioc.getConfiguredInjector(configClass).getAll(ContextConfigurator.class);
         configs.forEach(c -> c.config(context, configClass));
 

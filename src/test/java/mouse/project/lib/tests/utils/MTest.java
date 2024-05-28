@@ -1,4 +1,4 @@
-package mouse.project.lib.testutil;
+package mouse.project.lib.tests.utils;
 
 
 import java.util.*;

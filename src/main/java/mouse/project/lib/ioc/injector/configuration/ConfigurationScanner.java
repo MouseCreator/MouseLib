@@ -83,6 +83,9 @@ public class ConfigurationScanner {
 
     public void scanAndAddAll(InjectorBase injectorBase, Configuration config) {
         String basePackage = config.basePackage();
+        if (basePackage.isEmpty()) {
+            return;
+        }
         scanAndAddAll(injectorBase, basePackage);
     }
 
