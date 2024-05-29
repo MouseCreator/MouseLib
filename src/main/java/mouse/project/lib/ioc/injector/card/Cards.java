@@ -50,10 +50,10 @@ public class Cards {
     }
 
     public void init(Collection<Class<?>> classes) {
-        classes.forEach(c -> {
+        for (Class<?> c : classes) {
             DefinedCard<?> card = cardScanner.scan(c);
             definitionsManager.onAdd(card);
-        });
+        }
     }
     public <T> T get(Class<T> clazz) {
         return cardFactory.buildCard(new Implementation<>(clazz, null));

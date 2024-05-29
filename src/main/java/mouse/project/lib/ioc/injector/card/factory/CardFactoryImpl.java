@@ -23,11 +23,6 @@ public class CardFactoryImpl implements CardFactory {
         this.container = container;
         this.cardDefinitions = cardDefinitions;
     }
-
-    public CardFactoryImpl() {
-        container = null;
-        cardDefinitions = null;
-    }
     public <T> T buildCard(Implementation<T> implementation) {
         BuildStack buildStack = new BuildStack();
         return buildCard(implementation, buildStack);
@@ -87,17 +82,25 @@ public class CardFactoryImpl implements CardFactory {
         if (container.containsImplementation(current)) {
             return container.findImplementation(current);
         }
-        Object obj = produceCard(current, definition, buildStack);
-        container.put(obj);
+        Object obj = produceCardSingleton(current, definition, buildStack);
         return current.getClazz().cast(obj);
     }
 
     private  <T> T handlePrototype(Implementation<T> current, CardDefinition<?> definition, BuildStack buildStack) {
-        Object obj = produceCard(current, definition, buildStack);
+        Object obj = produceCardPrototype(current, definition, buildStack);
         return current.getClazz().cast(obj);
     }
-
-    private <T> Object produceCard(Implementation<T> current, CardDefinition<?> definition, BuildStack buildStack) {
+    private <T> Object produceCardSingleton(Implementation<T> current, CardDefinition<?> definition, BuildStack buildStack) {
+        CardProducer<?> producer = definition.getProducer();
+        BuildStack nextLevelBuildStack = buildStack.next(current);
+        CardAccess cardAccess = new CardAccessImpl(nextLevelBuildStack, this);
+        Object result = producer.produce(cardAccess);
+        container.put(result);
+        CardAccess newCardAccess = getNewCardAccess();
+        producer.afterConstruction(result, newCardAccess);
+        return result;
+    }
+    private <T> Object produceCardPrototype(Implementation<T> current, CardDefinition<?> definition, BuildStack buildStack) {
         CardProducer<?> producer = definition.getProducer();
         BuildStack nextLevelBuildStack = buildStack.next(current);
         CardAccess cardAccess = new CardAccessImpl(nextLevelBuildStack, this);

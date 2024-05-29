@@ -66,7 +66,11 @@ public class ConfigurationScanner {
 
     private void includeAll(InjectorBase injectorBase, Collection<Class<?>> classes) {
         for (Class<?> clazz : classes) {
-            injectorBase.include(clazz);
+            if (hasUseRestriction(clazz)) {
+                addRestricted(clazz, injectorBase);
+            } else {
+                addToInjectorBase(injectorBase, clazz);
+            }
         }
     }
 

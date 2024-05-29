@@ -31,7 +31,9 @@ public class DefinedProducerImpl<T> implements DefinedProducer<T> {
 
     @Override
     public void afterConstruction(Object constructed, CardAccess container) {
-        actionProducers.forEach(a -> a.call(constructed, container));
+        for (ActionProducer a : actionProducers) {
+            a.call(constructed, container);
+        }
     }
 
     @Override
