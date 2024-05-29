@@ -51,4 +51,9 @@ public class ActionInvokerTest {
     public void testTwoSingletons() {
         Assertions.assertDoesNotThrow(() -> Ioc.getConfiguredInjector(ConfigTwoSingletons.class).get(SingletonA.class));
     }
+
+    @Test
+    public void testLoadAll() {
+        Assertions.assertDoesNotThrow(() -> Ioc.getConfiguredInjector(ConfigTwoSingletons.class).getAll(Object.class));
+    }
 }
