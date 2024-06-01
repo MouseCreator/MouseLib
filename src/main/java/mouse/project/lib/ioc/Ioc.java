@@ -20,4 +20,11 @@ public class Ioc {
         Cards cards = ioc.injectorPool.request(config).getCards();
         return new InjImpl(cards);
     }
+
+    public static void remove(Class<?> config) {
+        if (ioc == null) {
+            return;
+        }
+        ioc.injectorPool.free(config);
+    }
 }

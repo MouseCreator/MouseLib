@@ -133,6 +133,9 @@ public class DefinedCardScanner implements CardScanner {
 
         public <T> void scan(DefinedCard<T> card, Class<?> toScan) {
             List<Method> methods = getActions(toScan);
+            if (methods.isEmpty()) {
+                return;
+            }
             if (card.getType().isPrototype()) {
                 throw new CardException("Prototypes are not allowed to have @After actions: " + card.getType().getClazz());
             }

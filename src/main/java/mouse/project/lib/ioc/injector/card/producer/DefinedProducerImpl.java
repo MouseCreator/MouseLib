@@ -2,6 +2,9 @@ package mouse.project.lib.ioc.injector.card.producer;
 
 import mouse.project.lib.exception.CardException;
 import mouse.project.lib.ioc.injector.card.access.CardAccess;
+import mouse.project.lib.ioc.injector.card.container.Implementation;
+import mouse.project.lib.ioc.injector.card.definition.ParameterDefinition;
+import mouse.project.lib.ioc.injector.card.invoke.Parameters;
 
 import java.util.ArrayList;
 import java.util.List;

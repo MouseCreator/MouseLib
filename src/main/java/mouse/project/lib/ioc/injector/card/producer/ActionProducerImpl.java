@@ -16,9 +16,14 @@ public class ActionProducerImpl implements ActionProducer {
 
     @Override
     public void call(Object callOn, CardAccess container) {
-        Parameters parameters = actionInvoker.getParameters();
+        Parameters parameters = getParameters();
         ParameterCreator parameterCreator = new ParameterCreator(container);
         List<Object> args = parameterCreator.assignAll(parameters);
         actionInvoker.invoke(callOn, args);
+    }
+
+    @Override
+    public Parameters getParameters() {
+        return actionInvoker.getParameters();
     }
 }
