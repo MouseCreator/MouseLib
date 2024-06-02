@@ -27,7 +27,7 @@ public class DefinedMapImpl<E extends TypeHolder<?>> implements DefinedMap<E> {
         List<E> cardDefinitions = getDefinitionsByClass(clazz);
         List<E> primary = getPrimaryFromList(cardDefinitions);
         if (primary.size()==1) {
-            return primary.get(0);
+            return primary.getFirst();
         }
         throw new MultipleImplementationsException("Found multiple definitions for " + clazz + ": " + primary.size());
     }
@@ -37,6 +37,14 @@ public class DefinedMapImpl<E extends TypeHolder<?>> implements DefinedMap<E> {
             throwNoCardDefinition(clazz);
         }
         return cardDefinitions;
+    }
+
+    private List<E> getAllDefinitionsByClass(Class<?> clazz) {
+        List<E> es = map.get(clazz);
+        if (es == null) {
+            es =  new ArrayList<>();
+        }
+        return es;
     }
 
     private static void throwNoCardDefinition(Class<?> clazz) {
@@ -50,7 +58,7 @@ public class DefinedMapImpl<E extends TypeHolder<?>> implements DefinedMap<E> {
         List<E> list = getNamedDefinitions(clazz, name);
         List<E> primary = getPrimaryFromList(list);
         if (primary.size()==1) {
-            return primary.get(0);
+            return primary.getFirst();
         }
         throw new MultipleImplementationsException("Found multiple definitions for " + clazz +
                 " and name " + name + ": " + primary.size());
@@ -58,17 +66,17 @@ public class DefinedMapImpl<E extends TypeHolder<?>> implements DefinedMap<E> {
 
     private List<E> getPrimaryFromList(List<E> cardDefinitions) {
         if (cardDefinitions.size()==1) {
-            return List.of(cardDefinitions.get(0));
+            return List.of(cardDefinitions.getFirst());
         }
         List<E> list = cardDefinitions.stream().filter(t -> t.getType().isPrimary()).toList();
         if (list.size()==1) {
-            return List.of(list.get(0));
+            return List.of(list.getFirst());
         }
         return list;
     }
 
     private List<E> getNamedDefinitions(Class<?> clazz, String name) {
-        List<E> cardDefinitions = getDefinitionsByClass(clazz);
+        List<E> cardDefinitions = getAllDefinitionsByClass(clazz);
         return filterNamedOnly(name, cardDefinitions);
     }
 
@@ -174,7 +182,7 @@ public class DefinedMapImpl<E extends TypeHolder<?>> implements DefinedMap<E> {
         return all.stream().distinct().toList();
     }
     private Collection<E> getAll(Class<?> clazz) {
-        List<E> definitionsByClass = getDefinitionsByClass(clazz);
+        List<E> definitionsByClass = getAllDefinitionsByClass(clazz);
         definitionsByClass.sort(Comparator.comparingInt(e -> e.getType().getOrder()));
         return definitionsByClass;
     }

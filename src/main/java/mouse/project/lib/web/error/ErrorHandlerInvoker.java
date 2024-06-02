@@ -25,6 +25,7 @@ public class ErrorHandlerInvoker {
     public void withErrorStyle(@Collect(ErrorStyle.class) List<ErrorStyle> errorStyles) {
         if (errorStyles.isEmpty()) {
             errorStyle = ErrorResponse::getMessage;
+            return;
         }
         if (errorStyles.size() > 2) {
             throw new MultipleImplementationsException("Multiple implementations found for: " + ErrorStyle.class);
