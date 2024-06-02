@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import mouse.project.lib.ioc.annotation.Auto;
 import mouse.project.lib.ioc.annotation.Service;
 import mouse.project.lib.web.exception.RequestProcessException;
-import mouse.project.lib.web.mapper.URLTransform;
 import mouse.project.lib.web.register.RequestMethod;
 import mouse.project.lib.web.request.RequestBody;
 import mouse.project.lib.web.request.RequestBodyImpl;
@@ -42,8 +41,7 @@ public class RequestPreinitializer {
     }
 
     public FullURL getRequestUrl(HttpServletRequest req) {
-        String strUrl = URLTransform.getFullURL(req);
-        return urlService.create(strUrl);
+        return urlService.create(req);
     }
 
     private HashMap<String, Object> createMap(HttpServletRequest req) {
